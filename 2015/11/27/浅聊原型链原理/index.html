@@ -181,12 +181,31 @@
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		<pre><code>javascript作为世界上最好的脚本语言，几乎已经是无所不能。而想要触及这门语言的灵魂，我们必须要搞明白prototype，也就是原型，可以说原型是javascript最为核心的一个概念。
-</code></pre>
+      		<p>  javascript作为世界上最好的脚本语言，几乎已经是无所不能。而想要触及这门语言的灵魂，我们必须要搞明白prototype，也就是原型，可以说原型是javascript最为核心的一个概念。</p>
+<p>  每一个构造函数都有一个属性prototype,指向一个对象。当这个构造函数被new的时候，他的每一个实例的<strong>proto</strong>属性也都指向这个对象。</p>
+<p>  每一个函数都天生都有一个prototype属性，指向一个空对象，也就是说，我们不需要定义这个属性，任何一个函数，在他写出来的那一瞬间，就有了这个属性，这个属性对于函数本身而言，没有任何的意义。它存在的意义，就是为他创造的实例对象做指向。通俗地说，构造函数就是一个伟大的母亲，她自身出现的那一刻，就为自己将来的儿子们准备好了一盏之路的明灯–prototype。</p>
+<p>  例如：有一个函数叫 People ，这个函数的属性 prototype 指向了一个对象，叫做 People.prototype。 一天，这个函数实例化了一个对象，叫做 Jacob， 实例化这个对象的时候，他就有了一个与生俱来的属性，叫做<strong>proto</strong>，他看见实例化自己的构造函数People的 prototype 属性指向了 People.prototype， 随之就将自己的<strong>proto</strong>属性也指向了 People.prototype 这个对象</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function People(name,age) &#123;</div><div class="line">  this.name = name;</div><div class="line">  this.age = age;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var Jacob = new People(&quot;Jacob&quot;,20);</div></pre></td></tr></table></figure>
+<p>  当这个代码写完的时候，在浏览器内部其实就做了如下的事情：<br>  <img src="/2015/11/27/浅聊原型链原理/原型基本图解.jpg" alt="原型基本图解"></p>
+<blockquote>
+<p>people.prototype是people构造函数的”原型”(prototype),是 Jacob 的”原型对象”(proto).</p>
+</blockquote>
+<p>  这是很多js书上的原文表达的意思，最简明扼要地解释了原型的根本内容。</p>
+<p>  原型就是这样了，那它到底是用来干是什么的呢？这就得提到原型链了。</p>
+<p>  说原型链，其实就是在解释<strong>proto</strong>这个玩意的作用，接着上面的例子来说，当Jacob身上没有某个属性的时候，它会沿着<strong>proto</strong>指向去People.prototype身上寻找这个属性。当原型对象People.prototype身上也没有，这个时候注意了，People.prototype也是一个对象，所以，它也有自己的<strong>proto</strong>，这样，Jacob就会继续沿着People.prototype的<strong>proto</strong>指向继续去寻找。当出现一下两种情况的时候才会停止：</p>
+<pre><code>* 在某一时刻，他找到了它想要的那个属性；
+* 它走到的原型链的末端 Object.prototype
+</code></pre><p>   <img src="/2015/11/27/浅聊原型链原理/原型链查找.png" alt="原型链查找"></p>
+<p>  这个过程，就是一个原型链查找的过程，这个过程中所经历的每个原型对象组合在一起，就是一条原型链。<br>  原型链查找的作用非常强大，可以说这个机制是构成javascript这门语言其他各种机制的根基，所以，我们必须要清清楚楚地搞清楚个机制，这对我们理解一些javascript库和之后继承机制有决定性的作用。</p>
+
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
         <nav class="pagination" role="pagination">
+    
+    <a class="pull-left" href="/2017/08/28/到底什么是构造函数/" style="float: left;">
+        ← 到底什么是构造函数
+    </a>
     
     
 </nav>
