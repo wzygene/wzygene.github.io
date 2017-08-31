@@ -181,7 +181,27 @@
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		
+      		<blockquote>
+<p>执行环境是javascript中最为重要的一个概念。执行环境定义了变量或者函数有权访问的其他数据，决定了他们各自的行为。</p>
+</blockquote>
+<p>在每一种编程语言中，都有所谓的执行环境的概念，但是很少有人重视这个概念，因为每个程序员都对执行环境都有自己感性的认识：自己内部的数据和外部的全局变量都是可以使用的。</p>
+<p>这么理解在大多数时间内是没有太大问题的。但是要想深入理解这门语言，应该对这个概念有更加清晰的认识，做到知其然，并知其所以然。</p>
+<p>每一个执行环境中都有一个变量对象，这个对象里边存放了当前环境中所有的变量和方法。</p>
+<p>最外层的执行环境，也叫全局执行环境，通俗一点说，在浏览器中，就是我们常常说的window对象，因此全局环境中所有的变量和函数都是作为window对象的属性和方法而存在的。</p>
+<p>每一个函数都是一个独立的执行环境。js语言有一个管理执行环境的机制：当程序执行到一个函数时，这个函数将被推进一个环境栈中，等到函数执行结束的时候，环境栈会将这个函数弹出，并删除这个函数的便能量对象，然后将环境栈的控制权交还给之前的执行环境。而window对象会直到应用程序退出（例如关闭网页或者浏览器）的时候才被删除数据。</p>
+<p>当代码在一个环境中执行的时候，会创建变量对象的一个作用域链。作用域链的用途是保证对执行环境能够访问的变量和函数进行有序的访问。作用域链的第一个变量对象，就是当前执行环境的变量对象。作用域链中的下一个变量对象来自外部环境，而再下一个变量对象来自下一个外部环境。就这样，一直延伸到全局环境中。所以，全局环境的变量对象是每个作用域链的最后一个对象。</p>
+<blockquote>
+<p>标识符解析是沿着作用域链一级一级地搜索标识符的过程。</p>
+</blockquote>
+<p>这个解析的过程始终都是从第一个变量对象开始，逐级向外延伸，直到找到标识符为止（如果找到最后还没有找到，那就会报错）。下边代码是一个三级作用域链的小例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Country = <span class="string">'China'</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">province</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> province = <span class="string">'beijing'</span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">county</span> (<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">var</span> county = <span class="string">'changping'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在上变的代码中：</p>
+<pre><code>+ 函数 county 中，能访问到 county，province，Country 这三个变量；
++ 函数 province 中，能访问到 province，Country 这两个变量；
++ 在全局中，只能访问到 Country 这一个变量。
+</code></pre><p>函数的作用域链如下图：<br><img src="/2015/06/28/函数执行环境及变量作用域/作用域链.jpg" alt="函数的作用域链"></p>
+<p>作用域链的箭头经过的地方，都是该函数的有效作用域，且查找顺序和作用域链经过的区域顺序一致。</p>
+<p>这里有一点需要注意一下：函数参数也当做变量来对待，因此访问规则与执行环境中其他变量相同。</p>
+
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
