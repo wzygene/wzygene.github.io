@@ -76,350 +76,104 @@
     <div id="container">
       <div id="main">
 
-   
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2016/02/17/jsonp跨域原理浅析/" title="jsonp跨域原理浅析" itemprop="url">
+  
+    <h1 itemprop="name">jsonp跨域原理浅析</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+           <p itemprop="description" >我们实际开发中，经常遇到这样一种情况，就是需要到别人的网站上去请求一些数据，就是所谓的跨域请求数据。跨域的具体解释请查看这篇博文：什么是跨域？先了解域名机制。但是因为一些安全性的问题，浏览器有一种跨域保护机制，我们在跨域请求数据的时候，浏览器会进行阻止。这样,即使我们确认没有安全</p>
+        
     
-      <a href="/2016/02/17/jsonp跨域原理浅析/" title="jsonp跨域原理浅析" itemprop="url">jsonp跨域原理浅析</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="wzygene" target="_blank" itemprop="author">wzygene</a>
-		
-  <p class="article-time">
-    <time datetime="2016-02-17T10:35:25.000Z" itemprop="datePublished"> 发表于 2016-02-17</time>
+    <time datetime="2016-02-17T10:35:25.000Z" itemprop="datePublished">2016-02-17</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/11/27/浅聊原型链原理/" title="浅聊原型链原理" itemprop="url">
+  
+    <h1 itemprop="name">浅聊原型链原理</h1>
     
-  </p>
-</header>
-    <div class="article-content">
+     
+           <p itemprop="description" >javascript作为世界上最好的脚本语言，几乎已经是无所不能。而想要触及这门语言的灵魂，我们必须要搞明白prototype，也就是原型，可以说原型是javascript最为核心的一个概念。
+  每一个构造函数都有一个属性prototype,指向一个对象。当这个构造函数被new</p>
         
-        <p>我们实际开发中，经常遇到这样一种情况，就是需要到别人的网站上去请求一些数据，就是所谓的跨域请求数据。跨域的具体解释请查看这篇博文：<a href="https://wzygene.github.io/2015/06/28/%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C%E7%8E%AF%E5%A2%83%E5%8F%8A%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F/">什么是跨域？先了解域名机制</a>。但是因为一些安全性的问题，浏览器有一种跨域保护机制，我们在跨域请求数据的时候，浏览器会进行阻止。这样,即使我们确认没有安全问题的情况下，也不能请求别人的数据了。我们是不是应该有一种机制可以获取到别的网站的数据呢？</p>
-<p>其实解决跨域请求数据的方式是很多的：jsonp、反向代理、CORS、通过 document.domain 跨子域。。。</p>
-<p>其中比较常用的就是 jsonp 的方式。这里，就来浅析一下 jsonp 的内部原理。</p>
-<p>我们从后台获取的数据往往使用的是 ajax 的方式，但是因为浏览器的跨域保护机制的存在，ajax 不允许跨域获取数据。正规的渠道行不通，我们就要通过别的办法来解决问题（至少的技术领域，必须这样做）。接下来用一句话概括 jsonp 的实现原理：</p>
-<blockquote>
-<p>jsonp 就是利用 script 标签的 src 属性去发送请求，来获取数据。</p>
-</blockquote>
-<p>用一个小 demo 来解释这个具体操作：</p>
-<p>首先，用 Apache 搭建两个虚拟主机，在第一个虚拟主机的域名就设置为 localhost，对应的文件夹下边创建一个 date.php 文件，内容为：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">  <span class="keyword">echo</span> <span class="string">'var n = 123;'</span>;</div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
-<p>在二个虚拟主机对应的文件夹下边创建一个 test.html 文件，内容为：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>jsonp demo<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">  </div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>接下来，使用 script 标签去获取 data.php 文件的数据，将下边这行代码插入到 test.html 的 head 标签中：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://localhost/data.php"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>我们，打开 test.html 文件，在控制台的 Network 窗口下就可以看到这里已经获取到了返回来的数据：</p>
-<p><img src="/2016/02/17/jsonp跨域原理浅析/跨域请求得到的数据.jpg" alt=""></p>
-<p>我们在 test.html 中打印一下n<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line"><span class="undefined">    console.log(n);</span></div><div class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>控制台中，不出意外地打印出了：123</p>
-<p><img src="/2016/02/17/jsonp跨域原理浅析/打印结果.jpg" alt=""></p>
-<p>这里有很不好的一点，就是这样的数据请求方式数据同步的，这样我们的程序和可能就是因为网络等一些外部原因产生阻塞，造成很不好的体验，所以我们把 async 属性加到请求数据的 script 标签中，使数据请求方式变成异步的：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">async</span> <span class="attr">src</span>=<span class="string">"http://doc.studyit.com/data.php?flag=1"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>但是，这个时候的控制台报错了：</p>
-<pre><code>Uncaught ReferenceError: n is not defined
-</code></pre><p>因为请求方式变成了异步的，而请求数据是要花费时间的，所以，打印 n 的操作在数据返回来之前就执行了。结果就是，n 变成了 undefined。</p>
-<p>同步会阻塞程序，使体验变差；异步操作，数据的使用发生在获取之前，造成代码错误。。。我们应该怎么解决呢？</p>
-<p>回调函数！！！</p>
-<p>使用回调函数，就可以完美地解决这个问题。</p>
-<p>我们在 test.html 中声明一个函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(data);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>然后在 data.php 文件中执行这个函数<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line">  <span class="comment">// echo 'var n = 123;';</span></div><div class="line">  <span class="keyword">echo</span> <span class="string">'hello(123)'</span>;</div><div class="line"><span class="meta">?&gt;</span></div></pre></td></tr></table></figure></p>
-<p>这样，再打开 test.html 文件就能正常打印出 123 了。</p>
-<p>但是，上面的代码都太<strong>生硬</strong>了，很死板，不够灵活。所以，采用一个比较方便的做法就是：动态创建 script 标签，然后通过标签的 src 属性发送跨域请求，并且可以携带参数,后台响应的内容是js代码（函数调用）</p>
-<p>前端代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">// 创建script标签</span></div><div class="line"><span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</div><div class="line"><span class="comment">// 携带参数：flag是一个普通参数，callback是回调函数的函数名</span></div><div class="line"><span class="keyword">var</span> param = <span class="string">'?flag=123&amp;callback=hello'</span>;</div><div class="line"><span class="comment">// 利用src属性发送请求</span></div><div class="line">script.src = <span class="string">'http://localhost/data.php'</span>+param;</div><div class="line"><span class="comment">// 将 script 标签放到 head 标签中</span></div><div class="line"><span class="keyword">var</span> head = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'head'</span>)[<span class="number">0</span>];</div><div class="line">head.appendChild(script);</div></pre></td></tr></table></figure></p>
-<p>服务端代码：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取flag数据</span></div><div class="line">$flag = $_GET[<span class="string">'flag'</span>];</div><div class="line"><span class="comment">// 获取回调函数</span></div><div class="line">$callback = $_GET[<span class="string">'callback'</span>];</div><div class="line"><span class="comment">// 创建一个数组</span></div><div class="line">$arr = <span class="keyword">array</span>(<span class="string">'name'</span>=&gt;<span class="string">'xiaoming'</span>,<span class="string">'age'</span>=&gt;<span class="string">'12'</span>,<span class="string">'flag'</span>=&gt;$flag);</div><div class="line"><span class="comment">// 把数组换换成字符串</span></div><div class="line">$str = json_encode($arr);</div><div class="line"><span class="comment">// 调用回调函数，打印数据</span></div><div class="line"><span class="keyword">echo</span> $callback.<span class="string">'('</span>.$str.<span class="string">')'</span>;</div></pre></td></tr></table></figure></p>
-<p>这样，代码运行完毕之后，在浏览器的控制台就打印出来如下的数据：</p>
-<p><img src="/2016/02/17/jsonp跨域原理浅析/打印结果2.jpg" alt=""></p>
-<p>jsonp 的基本原理其实就是这样。但是上边的代码看起来太 low 了。所以 jquery 以一种很优雅的方式对上边的代码进行了封装。</p>
-<p>我们封装了一个函数：myAjax，基本模拟出了来 jquery 的 ajax 方法在用作跨域时的一些列操作：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 封装一个函数，模拟 $.ajax 跨域时的操作 </span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">myAjax</span>(<span class="params">obj</span>)</span>&#123;</div><div class="line">    <span class="comment">// 默认参数</span></div><div class="line">    <span class="keyword">var</span> defaults = &#123;</div><div class="line">        jsonp : <span class="string">'callback'</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 覆盖默认参数</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> obj)&#123;</div><div class="line">        defaults[key] = obj[key];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 默认回调函数名称（这个函数名称非常个性，是jQuery拼接了一段随机数和当前时间作为了一个回调函数的函数名）</span></div><div class="line">    <span class="keyword">var</span> cbName = <span class="string">'jQuery'</span> + (<span class="string">'v1.11.1'</span> + <span class="built_in">Math</span>.random()).replace(<span class="regexp">/\D/g</span>,<span class="string">''</span>) + <span class="string">'_'</span> + <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</div><div class="line">    <span class="keyword">if</span>(defaults.jsonpCallback)&#123;</div><div class="line">        <span class="comment">// 可以使用 jsonpCallback 自行定制回调函数名称</span></div><div class="line">        cbName = defaults.jsonpCallback;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 定义回调函数</span></div><div class="line">    <span class="built_in">window</span>[cbName] = <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">        defaults.success(data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 发送跨域请求</span></div><div class="line">    <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</div><div class="line">    <span class="keyword">var</span> param = <span class="string">''</span>;</div><div class="line">    <span class="keyword">if</span>(defaults.data)&#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> defaults.data)&#123;</div><div class="line">        param += key + <span class="string">'='</span> + defaults.data[key] + <span class="string">'&amp;'</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    script.src = defaults.url + <span class="string">'?'</span> + param + defaults.jsonp + <span class="string">'='</span> + cbName;</div><div class="line">    <span class="keyword">var</span> head = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'head'</span>)[<span class="number">0</span>];</div><div class="line">    head.appendChild(script);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 发送跨域请求</span></div><div class="line">myAjax(&#123;</div><div class="line">    url : <span class="string">'http://doc.studyit.com/data.php'</span>,</div><div class="line">    jsonp : <span class="string">'abc'</span>,</div><div class="line">    jsonpCallback : <span class="string">'hello'</span>,</div><div class="line">    data : &#123;<span class="attr">flag</span>:<span class="number">123</span>&#125;,</div><div class="line">    dataType : <span class="string">'jsonp'</span>,</div><div class="line">    success : <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(data);</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>这段代码执行完毕之后，打印的结果是:</p>
-<p><img src="/2016/02/17/jsonp跨域原理浅析/jsonP跨域原理浅析/打印结果3.jpg" alt=""></p>
-<p>这样我们就基本上模拟出了 jquery 封装的跨域操作。</p>
-<p>跨域的请求方式还有很多，在这里就不一一赘述了。</p>
-<p>荆轲刺秦王。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+    <time datetime="2015-11-27T03:44:06.000Z" itemprop="datePublished">2015-11-27</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/11/23/到底什么是构造函数/" title="到底什么是构造函数" itemprop="url">
+  
+    <h1 itemprop="name">到底什么是构造函数</h1>
     
-      <a href="/2015/11/27/浅聊原型链原理/" title="浅聊原型链原理" itemprop="url">浅聊原型链原理</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="wzygene" target="_blank" itemprop="author">wzygene</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-27T03:44:06.000Z" itemprop="datePublished"> 发表于 2015-11-27</time>
+     
+           <p itemprop="description" >javascript是一门基于对象的语言，之所以是基于对象，而不是面向对象，是因为js这门语言没有类的概念，因此它的对象与基于类的语言中的对象有所不同。
+我们可以把js中的对象想象成一组无序的散列表。比如下面这就是一个最简单的对象12345678var person = &amp;#12</p>
+        
     
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>  javascript作为世界上最好的脚本语言，几乎已经是无所不能。而想要触及这门语言的灵魂，我们必须要搞明白prototype，也就是原型，可以说原型是javascript最为核心的一个概念。</p>
-<p>  每一个构造函数都有一个属性prototype,指向一个对象。当这个构造函数被new的时候，他的每一个实例的<strong>proto</strong>属性也都指向这个对象。</p>
-<p>  每一个函数都天生都有一个prototype属性，指向一个空对象，也就是说，我们不需要定义这个属性，任何一个函数，在他写出来的那一瞬间，就有了这个属性，这个属性对于函数本身而言，没有任何的意义。它存在的意义，就是为他创造的实例对象做指向。通俗地说，构造函数就是一个伟大的母亲，她自身出现的那一刻，就为自己将来的儿子们准备好了一盏之路的明灯–prototype。</p>
-<p>  例如：有一个函数叫 People ，这个函数的属性 prototype 指向了一个对象，叫做 People.prototype。 一天，这个函数实例化了一个对象，叫做 Jacob， 实例化这个对象的时候，他就有了一个与生俱来的属性，叫做<strong>proto</strong>，他看见实例化自己的构造函数People的 prototype 属性指向了 People.prototype， 随之就将自己的<strong>proto</strong>属性也指向了 People.prototype 这个对象</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function People(name,age) &#123;</div><div class="line">  this.name = name;</div><div class="line">  this.age = age;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var Jacob = new People(&quot;Jacob&quot;,20);</div></pre></td></tr></table></figure>
-<p>  当这个代码写完的时候，在浏览器内部其实就做了如下的事情：<br>  <img src="/2015/11/27/浅聊原型链原理/原型基本图解.jpg" alt="原型基本图解"></p>
-<blockquote>
-<p>people.prototype是people构造函数的”原型”(prototype),是 Jacob 的”原型对象”(proto).</p>
-</blockquote>
-<p>  这是很多js书上的原文表达的意思，最简明扼要地解释了原型的根本内容。</p>
-<p>  原型就是这样了，那它到底是用来干是什么的呢？这就得提到原型链了。</p>
-<p>  说原型链，其实就是在解释<strong>proto</strong>这个玩意的作用，接着上面的例子来说，当Jacob身上没有某个属性的时候，它会沿着<strong>proto</strong>指向去People.prototype身上寻找这个属性。当原型对象People.prototype身上也没有，这个时候注意了，People.prototype也是一个对象，所以，它也有自己的<strong>proto</strong>，这样，Jacob就会继续沿着People.prototype的<strong>proto</strong>指向继续去寻找。当出现一下两种情况的时候才会停止：</p>
-<pre><code>* 在某一时刻，他找到了它想要的那个属性；
-* 它走到的原型链的末端 Object.prototype
-</code></pre><p>   <img src="/2015/11/27/浅聊原型链原理/原型链查找.png" alt="原型链查找"></p>
-<p>  这个过程，就是一个原型链查找的过程，这个过程中所经历的每个原型对象组合在一起，就是一条原型链。<br>  原型链查找的作用非常强大，可以说这个机制是构成javascript这门语言其他各种机制的根基，所以，我们必须要清清楚楚地搞清楚个机制，这对我们理解一些javascript库和之后继承机制有决定性的作用。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
+    <time datetime="2015-11-23T03:02:01.000Z" itemprop="datePublished">2015-11-23</time>
+  </a>
+</section>
 
 
 
 
 
 
-   
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/06/28/函数执行环境及变量作用域/" title="函数执行环境及变量作用域" itemprop="url">
+  
+    <h1 itemprop="name">函数执行环境及变量作用域</h1>
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
+     
+           <p itemprop="description" >执行环境是javascript中最为重要的一个概念。执行环境定义了变量或者函数有权访问的其他数据，决定了他们各自的行为。
+
+在每一种编程语言中，都有所谓的执行环境的概念，但是很少有人重视这个概念，因为每个程序员都对执行环境都有自己感性的认识：自己内部的数据和外部的全局变量都是可以</p>
+        
     
-      <a href="/2015/11/23/到底什么是构造函数/" title="到底什么是构造函数" itemprop="url">到底什么是构造函数</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="wzygene" target="_blank" itemprop="author">wzygene</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-23T03:02:01.000Z" itemprop="datePublished"> 发表于 2015-11-23</time>
+    <time datetime="2015-06-28T12:12:14.000Z" itemprop="datePublished">2015-06-28</time>
+  </a>
+</section>
+
+
+
+
+
+
+  
+<section class="post" itemscope itemprop="blogitem">
+  
+    <a href="/2015/06/18/with函数-一个不错的小工具/" title="with函数--一个不错的小工具" itemprop="url">
+  
+    <h1 itemprop="name">with函数--一个不错的小工具</h1>
     
-  </p>
-</header>
-    <div class="article-content">
+     
+           <p itemprop="description" >with函数，也叫做with语句。是一个拓展作用域链的小工具。他可以通过传递 “参数” 的方式，简化我们的代码量。请看下边的例子：12345678910var date = new Date();function getDate() &amp;#123;  var year = date</p>
         
-        <p>javascript是一门基于对象的语言，之所以是基于对象，而不是面向对象，是因为js这门语言没有类的概念，因此它的对象与基于类的语言中的对象有所不同。</p>
-<p>我们可以把js中的对象想象成一组无序的散列表。比如下面这就是一个最简单的对象<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">    name:<span class="string">'小明'</span>,</div><div class="line">    age:<span class="number">12</span>,</div><div class="line">    hobby:<span class="string">'王者农药'</span>,</div><div class="line">    play:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        alert(<span class="string">'来吧，我的亚瑟贼6！'</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在这个简单的对象里面定义了一个实体，他有自己的某些特征：name、age、hobby，这就是我们常说的属性，同时还有自己的一个行为：play王者农药，这就是我们常说的方法。</p>
-<p>这是用字面量的方式创建的一个对象。我们还可以使用构造函数创建一个对象，但是构造函数是什么？如果仅仅将函数名首字母大写的函数理解为是构造函数。。。呵呵！</p>
-<p>要彻底理解构造函数，我们还是看看创建对象的演变过程吧，等这个故事讲完了，答案也就有了。</p>
-<p>我们往往要创建大量的对象，而这些对象很多有相同的属性群和方法群，这样的对象要是全都用字面量的方式去创建，很麻烦，而且没必要，因为我们可以使用一个函数来模拟出一个工厂，专门用来创建一类对象，这就是所谓的工厂函数。请看下面的例子<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPerson</span>(<span class="params">name,age,hobby</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> person = &#123;&#125;;</div><div class="line">    person.name = name;</div><div class="line">    person.age = age;</div><div class="line">    person.hobby = hobby;</div><div class="line">    <span class="keyword">return</span> person;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> xiaoming = createPerson(<span class="string">'xiaoming'</span>,<span class="number">12</span>,<span class="string">'王者农药'</span>);</div><div class="line"><span class="keyword">var</span> xiaohong = createPerson(<span class="string">'xiaohong'</span>,<span class="number">14</span>,<span class="string">'英雄联盟'</span>);</div></pre></td></tr></table></figure></p>
-<p>使用这个函数，我们就可以创建一个 person 类型的对象，这个函数没别的功能，它只能：创建一个对象，赋予这个对象一定的属性，然后将这个对象返回。上述代码中， xiaoming 和xiaohong 就是用这个工程函数创建出来的两个有相同属性群的对象。</p>
-<p>工程函数解决了创建多个相似对象的问题，但是它无法判定一个对象属于那种类型，这是个很麻烦的问题，但是随着js的发展，有一个新的模式出现了。那就是我们的主角：构造函数。先看一个构造函数的小例子<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,hobby</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name,</div><div class="line">    <span class="keyword">this</span>.age = age,</div><div class="line">    <span class="keyword">this</span>.hobby = hobby</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> xiaoming = <span class="keyword">new</span> Person(<span class="string">'xiaoming'</span>,<span class="number">12</span>,<span class="string">'王者农药'</span>);</div><div class="line"><span class="keyword">var</span> xiaohong = <span class="keyword">new</span> Person(<span class="string">'xiaohong'</span>,<span class="number">14</span>,<span class="string">'英雄联盟'</span>);</div></pre></td></tr></table></figure></p>
-<p>上面这段代码就是典型的使用构造函数创建对象的过程。我们可以看到构造函数创建对象和工厂函数创建对象的几点不同之处：</p>
-<pre><code>1.函数体内部开始位置并没有创建对象；
-2.直接将属性赋予了this对象；
-3.函数结束的位置并没返回任何东西；
-4.在调用函数的时候，在函数前面加了一个 new 操作符。
-</code></pre><p>这几点不同之处就是理解构造函数的关键。</p>
-<p>其实，一个函数能不能称之为构造函数，与它怎么定义没有半毛钱的关系，关键在于这个函数怎么调用。如果直接调用，或者作为一个对象的方法被调用，他都只是一个普通的函数。但是如果使用 new 操作符去调用一个函数，那就不一样了，这个 new 操作符会悄悄地做一些事情，而被调用的函数就是因为 new 操作符做的这些事情，被抬到了一个新的高度，然后被赋予一个新的称呼：构造函数。</p>
-<p>那么，new 操作符到底做什么事情呢？其实就是4个步骤：</p>
-<pre><code>1.创建一个新对象；
-2.将构造函数的上下文设置成这个对象（因此this就指向了这个对象）；
-3.依次执行构造函数中的代码（也就是给这个对象添加属性）；
-4.返回这个新对象。
-</code></pre><p>所以，在 Person 函数中，我们没有看到创建对象，也没有看到函数返回任何东西，但是最终一个对象被创建了出来，就是因为这些工作都被 new 操作符隐式地完成了。</p>
-<p>这个时候，我们别忘了之前的那个问题：怎么判断一个对象的类型？使用构造函数创建一个对象之后，这个对象就会有一个constructor属性，通过这个属性我们就能判断这个对象是什么类型了。在之前代码的基础上执行下面这句代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(xiaoming.constructor == Person);</div></pre></td></tr></table></figure></p>
-<p>没什么好怀疑的，打印的结果就是 true。</p>
-<p>我们现在该思考一个问题了，构造函数中并没有给this对象赋值一个 constructor 的属性啊，它是从哪跑粗来的？</p>
-<p>答案是：原型。 </p>
-<p>原型是什么？呵呵，荆轲刺秦王！！！</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
     
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/06/28/函数执行环境及变量作用域/" title="函数执行环境及变量作用域" itemprop="url">函数执行环境及变量作用域</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="wzygene" target="_blank" itemprop="author">wzygene</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-28T12:12:14.000Z" itemprop="datePublished"> 发表于 2015-06-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>执行环境是javascript中最为重要的一个概念。执行环境定义了变量或者函数有权访问的其他数据，决定了他们各自的行为。</p>
-</blockquote>
-<p>在每一种编程语言中，都有所谓的执行环境的概念，但是很少有人重视这个概念，因为每个程序员都对执行环境都有自己感性的认识：自己内部的数据和外部的全局变量都是可以使用的。</p>
-<p>这么理解在大多数时间内是没有太大问题的。但是要想深入理解这门语言，应该对这个概念有更加清晰的认识，做到知其然，并知其所以然。</p>
-<p>每一个执行环境中都有一个变量对象，这个对象里边存放了当前环境中所有的变量和方法。</p>
-<p>最外层的执行环境，也叫全局执行环境，通俗一点说，在浏览器中，就是我们常常说的window对象，因此全局环境中所有的变量和函数都是作为window对象的属性和方法而存在的。</p>
-<p>每一个函数都是一个独立的执行环境。js语言有一个管理执行环境的机制：当程序执行到一个函数时，这个函数将被推进一个环境栈中，等到函数执行结束的时候，环境栈会将这个函数弹出，并删除这个函数的便能量对象，然后将环境栈的控制权交还给之前的执行环境。而window对象会直到应用程序退出（例如关闭网页或者浏览器）的时候才被删除数据。</p>
-<p>当代码在一个环境中执行的时候，会创建变量对象的一个作用域链。作用域链的用途是保证对执行环境能够访问的变量和函数进行有序的访问。作用域链的第一个变量对象，就是当前执行环境的变量对象。作用域链中的下一个变量对象来自外部环境，而再下一个变量对象来自下一个外部环境。就这样，一直延伸到全局环境中。所以，全局环境的变量对象是每个作用域链的最后一个对象。</p>
-<blockquote>
-<p>标识符解析是沿着作用域链一级一级地搜索标识符的过程。</p>
-</blockquote>
-<p>这个解析的过程始终都是从第一个变量对象开始，逐级向外延伸，直到找到标识符为止（如果找到最后还没有找到，那就会报错）。下边代码是一个三级作用域链的小例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Country = <span class="string">'China'</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">province</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> province = <span class="string">'beijing'</span>;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">county</span> (<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">var</span> county = <span class="string">'changping'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在上变的代码中：</p>
-<pre><code>+ 函数 county 中，能访问到 county，province，Country 这三个变量；
-+ 函数 province 中，能访问到 province，Country 这两个变量；
-+ 在全局中，只能访问到 Country 这一个变量。
-</code></pre><p>函数的作用域链如下图：<br><img src="/2015/06/28/函数执行环境及变量作用域/作用域链.jpg" alt="函数的作用域链"></p>
-<p>作用域链的箭头经过的地方，都是该函数的有效作用域，且查找顺序和作用域链经过的区域顺序一致。</p>
-<p>这里有一点需要注意一下：函数参数也当做变量来对待，因此访问规则与执行环境中其他变量相同。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/06/18/with函数-一个不错的小工具/" title="with函数--一个不错的小工具" itemprop="url">with函数--一个不错的小工具</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="wzygene" target="_blank" itemprop="author">wzygene</a>
-		
-  <p class="article-time">
-    <time datetime="2015-06-18T08:32:15.000Z" itemprop="datePublished"> 发表于 2015-06-18</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>with函数，也叫做with语句。是一个拓展作用域链的小工具。他可以通过传递 “参数” 的方式，简化我们的代码量。请看下边的例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDate</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> year = date.getFullYear();</div><div class="line">  <span class="keyword">var</span> month = date.getMonth()+<span class="number">1</span>;</div><div class="line">  <span class="keyword">var</span> day = date.getDate();</div><div class="line"> </div><div class="line">  <span class="keyword">return</span> year+<span class="string">' '</span>+month+<span class="string">' '</span>+day;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> currentDate = getDate();</div><div class="line"><span class="built_in">console</span>.log(currentDate);</div></pre></td></tr></table></figure></p>
-<p>上面的这段代码的，首先通过构造函数的方式创建了一个日期对象，然后定义了一个函数，在函数中分别获取了当前的年、月、日，最后将它们拼接成一个字符串并返回。</p>
-<p>可以看到，我们在函数getDate中，每次获取年月日，都要通过事先创建的日期对象来调用其内部方法来实现。这是因为直接调用方法的话，在当前的作用域链中找不到对应的方法。</p>
-<p>但是，通过with函数就可以避免频繁使用对象，我们可将对象作为参数传到with函数中去，从而扩展作用域链（将date对象加入到自己的作用域链中），然后就可以直接调用方法了。改进的代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDate</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">with</span>(date)&#123;</div><div class="line">    <span class="keyword">var</span> year = getFullYear();</div><div class="line">    <span class="keyword">var</span> month = getMonth()+<span class="number">1</span>;</div><div class="line">    <span class="keyword">var</span> day = getDate();</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> year+<span class="string">' '</span>+month+<span class="string">' '</span>+day;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> currentDate = getDate();</div><div class="line"><span class="built_in">console</span>.log(currentDate);</div></pre></td></tr></table></figure></p>
-<p>这段代码和上面那段代码，最终的执行结果是一样的。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
+    <time datetime="2015-06-18T08:32:15.000Z" itemprop="datePublished">2015-06-18</time>
+  </a>
+</section>
 
 
 
