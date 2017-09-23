@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://wzygene.github.io/2015/06/11/js数据类型及内存/打印结果.jpg">
 <meta property="og:image" content="https://wzygene.github.io/2015/06/11/js数据类型及内存/内存1.jpg">
 <meta property="og:image" content="https://wzygene.github.io/2015/06/11/js数据类型及内存/内存2.jpg">
-<meta property="og:updated_time" content="2017-09-23T14:49:37.248Z">
+<meta property="og:updated_time" content="2017-09-23T14:57:36.146Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js数据类型及内存">
 <meta name="twitter:description" content="与很多其他的语言不同，JavaScript 是一门弱类型的语言，所以的它的变量类型很少，大体上只分为：基本数据类型和引用数据类型。 其中，基本数据类型包括：Number,String,Boolean,Undefined,null。引用数据类型有：Object（Array也属于Object）。  基本数据类型存放在栈内存中，引用数据类型保存在堆内存中。  到底有什么区别呢？看下边这段小代码： 123">
@@ -114,9 +114,9 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> num1 = <span class="number">998</span>;</div><div class="line"><span class="keyword">var</span> num2 = num1;</div><div class="line"></div><div class="line"><span class="keyword">var</span> str1 = <span class="string">'foo'</span>;</div><div class="line"><span class="keyword">var</span> str2 = str1;</div><div class="line"></div><div class="line"><span class="keyword">var</span> arr1 = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>];</div><div class="line"><span class="keyword">var</span> arr2 = arr1;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj1 = &#123;</div><div class="line">    ele1: <span class="string">'baz'</span>,</div><div class="line">    ele2: <span class="string">'bar'</span></div><div class="line">&#125;;</div><div class="line"><span class="keyword">var</span> obj2 = obj1;</div><div class="line"></div><div class="line">num2 = <span class="number">1000</span>;</div><div class="line">str2 = <span class="string">'zhangsan'</span>;</div><div class="line">arr2.push(<span class="string">'d'</span>);</div><div class="line">obj2.ele3 = <span class="string">'bee'</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(num1,num2);</div><div class="line"><span class="built_in">console</span>.log(str1,str2);</div><div class="line"><span class="built_in">console</span>.log(arr1,arr2);</div><div class="line"><span class="built_in">console</span>.log(obj1,obj2);</div></pre></td></tr></table></figure>
 <p>打印结果是：<br><img src="/2015/06/11/js数据类型及内存/打印结果.jpg" alt=""></p>
 <p>可以看到，num2 和 str2 的修改并没有影响到 num1 和 str1，但是 arr2 和 obj2，修改后，arr1 和 obj1 也随之变化了。造成这种现象的原因就是两种数据在不同的内存中存储。</p>
-<p>当上数代码执行到第14行的时候，内存中的情况是这样的：</p>
+<p>当上述代码执行到第14行的时候，内存中的情况是这样的：</p>
 <p><img src="/2015/06/11/js数据类型及内存/内存1.jpg" alt=""></p>
-<p>从这个图中，我们可以看到，基本数据类型是直接存放在占内存中的，将一个变量的值赋给另一个变量的时候，都是将栈中的值直接拷贝一份，赋值给另一个变量。也就是说，另一个变量被赋值之后，就和原来的变量没有任何关系了，它自己如何改动当然都不会影响到原来的变量。</p>
+<p>从这个图中，我们可以看到，基本数据类型是直接存放在栈内存中的，将一个变量的值赋给另一个变量的时候，都是将栈中的值直接拷贝一份，赋值给另一个变量。也就是说，另一个变量被赋值之后，就和原来的变量没有任何关系了，它自己如何改动当然都不会影响到原来的变量。</p>
 <p>但是引用数据类型的内容是存放在堆内存中的，而存储在栈内存中的只是一个指向堆内存中数据的指针（地址）。引用数据类型赋值的时候，也是将栈内存中的数据拷贝一份，赋值给另一个变量。这样，被赋值的元素得到的也是一个指针，结果就是，赋值与被赋值的两个元素都指向了同一块堆内存。所以，两个对象中任何一个针对对象做的操作都会反映到另一个身上（其实他们压根就是同一个对象）。</p>
 <p>上面的代码执行完之后的结果如下：<br><img src="/2015/06/11/js数据类型及内存/内存2.jpg" alt=""></p>
 <p>这就是最终的上面打印结果的原因。</p>
