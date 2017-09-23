@@ -4,24 +4,28 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>with函数--一个不错的小工具 | 原始计划</title>
+    <title>js数据类型及内存 | 原始计划</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="wzygene">
     
 
     
-    <meta name="description" content="with函数，也叫做with语句。是一个拓展作用域链的小工具。他可以通过传递 “参数” 的方式，简化我们的代码量。请看下边的例子：12345678910var date = new Date();function getDate() &amp;#123;  var year = date.getFullYear();  var month = date.getMonth()+1;  var day = d">
+    <meta name="description" content="与很多其他的语言不同，JavaScript 是一门弱类型的语言，所以的它的变量类型很少，大体上只分为：基本数据类型和引用数据类型。 其中，基本数据类型包括：Number,String,Boolean,Undefined,null。引用数据类型有：Object（Array也属于Object）。  基本数据类型存放在栈内存中，引用数据类型保存在堆内存中。  到底有什么区别呢？看下边这段小代码： 123">
 <meta property="og:type" content="article">
-<meta property="og:title" content="with函数--一个不错的小工具">
-<meta property="og:url" content="https://wzygene.github.io/2015/06/18/with函数-一个不错的小工具/index.html">
+<meta property="og:title" content="js数据类型及内存">
+<meta property="og:url" content="https://wzygene.github.io/2015/06/11/js数据类型及内存/index.html">
 <meta property="og:site_name" content="原始计划">
-<meta property="og:description" content="with函数，也叫做with语句。是一个拓展作用域链的小工具。他可以通过传递 “参数” 的方式，简化我们的代码量。请看下边的例子：12345678910var date = new Date();function getDate() &amp;#123;  var year = date.getFullYear();  var month = date.getMonth()+1;  var day = d">
+<meta property="og:description" content="与很多其他的语言不同，JavaScript 是一门弱类型的语言，所以的它的变量类型很少，大体上只分为：基本数据类型和引用数据类型。 其中，基本数据类型包括：Number,String,Boolean,Undefined,null。引用数据类型有：Object（Array也属于Object）。  基本数据类型存放在栈内存中，引用数据类型保存在堆内存中。  到底有什么区别呢？看下边这段小代码： 123">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-28T13:50:08.920Z">
+<meta property="og:image" content="https://wzygene.github.io/2015/06/11/js数据类型及内存/打印结果.jpg">
+<meta property="og:image" content="https://wzygene.github.io/2015/06/11/js数据类型及内存/内存1.jpg">
+<meta property="og:image" content="https://wzygene.github.io/2015/06/11/js数据类型及内存/内存2.jpg">
+<meta property="og:updated_time" content="2017-09-23T14:49:37.248Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="with函数--一个不错的小工具">
-<meta name="twitter:description" content="with函数，也叫做with语句。是一个拓展作用域链的小工具。他可以通过传递 “参数” 的方式，简化我们的代码量。请看下边的例子：12345678910var date = new Date();function getDate() &amp;#123;  var year = date.getFullYear();  var month = date.getMonth()+1;  var day = d">
+<meta name="twitter:title" content="js数据类型及内存">
+<meta name="twitter:description" content="与很多其他的语言不同，JavaScript 是一门弱类型的语言，所以的它的变量类型很少，大体上只分为：基本数据类型和引用数据类型。 其中，基本数据类型包括：Number,String,Boolean,Undefined,null。引用数据类型有：Object（Array也属于Object）。  基本数据类型存放在栈内存中，引用数据类型保存在堆内存中。  到底有什么区别呢？看下边这段小代码： 123">
+<meta name="twitter:image" content="https://wzygene.github.io/2015/06/11/js数据类型及内存/打印结果.jpg">
 
     
     <link rel="alternative" href="/atom.xml" title="原始计划" type="application/atom+xml">
@@ -81,14 +85,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/06/18/with函数-一个不错的小工具/" title="with函数--一个不错的小工具" itemprop="url">with函数--一个不错的小工具</a>
+      <a href="/2015/06/11/js数据类型及内存/" title="js数据类型及内存" itemprop="url">js数据类型及内存</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="wzygene" target="_blank" itemprop="author">wzygene</a>
 		
   <p class="article-time">
-    <time datetime="2015-06-18T08:32:15.000Z" itemprop="datePublished"> 发表于 2015-06-18</time>
+    <time datetime="2015-06-11T13:38:46.000Z" itemprop="datePublished"> 发表于 2015-06-11</time>
     
   </p>
 </header>
@@ -101,11 +105,21 @@
 		
 		</div>
 		
-		<p>with函数，也叫做with语句。是一个拓展作用域链的小工具。他可以通过传递 “参数” 的方式，简化我们的代码量。请看下边的例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDate</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> year = date.getFullYear();</div><div class="line">  <span class="keyword">var</span> month = date.getMonth()+<span class="number">1</span>;</div><div class="line">  <span class="keyword">var</span> day = date.getDate();</div><div class="line"> </div><div class="line">  <span class="keyword">return</span> year+<span class="string">' '</span>+month+<span class="string">' '</span>+day;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> currentDate = getDate();</div><div class="line"><span class="built_in">console</span>.log(currentDate);</div></pre></td></tr></table></figure></p>
-<p>上面的这段代码的，首先通过构造函数的方式创建了一个日期对象，然后定义了一个函数，在函数中分别获取了当前的年、月、日，最后将它们拼接成一个字符串并返回。</p>
-<p>可以看到，我们在函数getDate中，每次获取年月日，都要通过事先创建的日期对象来调用其内部方法来实现。这是因为直接调用方法的话，在当前的作用域链中找不到对应的方法。</p>
-<p>但是，通过with函数就可以避免频繁使用对象，我们可将对象作为参数传到with函数中去，从而扩展作用域链（将date对象加入到自己的作用域链中），然后就可以直接调用方法了。改进的代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDate</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">with</span>(date)&#123;</div><div class="line">    <span class="keyword">var</span> year = getFullYear();</div><div class="line">    <span class="keyword">var</span> month = getMonth()+<span class="number">1</span>;</div><div class="line">    <span class="keyword">var</span> day = getDate();</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> year+<span class="string">' '</span>+month+<span class="string">' '</span>+day;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> currentDate = getDate();</div><div class="line"><span class="built_in">console</span>.log(currentDate);</div></pre></td></tr></table></figure></p>
-<p>这段代码和上面那段代码，最终的执行结果是一样的。</p>
+		<p>与很多其他的语言不同，JavaScript 是一门弱类型的语言，所以的它的变量类型很少，大体上只分为：<strong>基本数据类型</strong>和<strong>引用数据类型</strong>。</p>
+<p>其中，基本数据类型包括：Number,String,Boolean,Undefined,null。引用数据类型有：Object（Array也属于Object）。</p>
+<blockquote>
+<p>基本数据类型存放在栈内存中，引用数据类型保存在堆内存中。</p>
+</blockquote>
+<p>到底有什么区别呢？看下边这段小代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> num1 = <span class="number">998</span>;</div><div class="line"><span class="keyword">var</span> num2 = num1;</div><div class="line"></div><div class="line"><span class="keyword">var</span> str1 = <span class="string">'foo'</span>;</div><div class="line"><span class="keyword">var</span> str2 = str1;</div><div class="line"></div><div class="line"><span class="keyword">var</span> arr1 = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>];</div><div class="line"><span class="keyword">var</span> arr2 = arr1;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj1 = &#123;</div><div class="line">    ele1: <span class="string">'baz'</span>,</div><div class="line">    ele2: <span class="string">'bar'</span></div><div class="line">&#125;;</div><div class="line"><span class="keyword">var</span> obj2 = obj1;</div><div class="line"></div><div class="line">num2 = <span class="number">1000</span>;</div><div class="line">str2 = <span class="string">'zhangsan'</span>;</div><div class="line">arr2.push(<span class="string">'d'</span>);</div><div class="line">obj2.ele3 = <span class="string">'bee'</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(num1,num2);</div><div class="line"><span class="built_in">console</span>.log(str1,str2);</div><div class="line"><span class="built_in">console</span>.log(arr1,arr2);</div><div class="line"><span class="built_in">console</span>.log(obj1,obj2);</div></pre></td></tr></table></figure>
+<p>打印结果是：<br><img src="/2015/06/11/js数据类型及内存/打印结果.jpg" alt=""></p>
+<p>可以看到，num2 和 str2 的修改并没有影响到 num1 和 str1，但是 arr2 和 obj2，修改后，arr1 和 obj1 也随之变化了。造成这种现象的原因就是两种数据在不同的内存中存储。</p>
+<p>当上数代码执行到第14行的时候，内存中的情况是这样的：</p>
+<p><img src="/2015/06/11/js数据类型及内存/内存1.jpg" alt=""></p>
+<p>从这个图中，我们可以看到，基本数据类型是直接存放在占内存中的，将一个变量的值赋给另一个变量的时候，都是将栈中的值直接拷贝一份，赋值给另一个变量。也就是说，另一个变量被赋值之后，就和原来的变量没有任何关系了，它自己如何改动当然都不会影响到原来的变量。</p>
+<p>但是引用数据类型的内容是存放在堆内存中的，而存储在栈内存中的只是一个指向堆内存中数据的指针（地址）。引用数据类型赋值的时候，也是将栈内存中的数据拷贝一份，赋值给另一个变量。这样，被赋值的元素得到的也是一个指针，结果就是，赋值与被赋值的两个元素都指向了同一块堆内存。所以，两个对象中任何一个针对对象做的操作都会反映到另一个身上（其实他们压根就是同一个对象）。</p>
+<p>上面的代码执行完之后的结果如下：<br><img src="/2015/06/11/js数据类型及内存/内存2.jpg" alt=""></p>
+<p>这就是最终的上面打印结果的原因。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -118,7 +132,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="https://wzygene.github.io/2015/06/18/with函数-一个不错的小工具/" data-title="with函数--一个不错的小工具 | 原始计划" data-tsina="" class="share clearfix">
+	  <div data-url="https://wzygene.github.io/2015/06/11/js数据类型及内存/" data-title="js数据类型及内存 | 原始计划" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -132,21 +146,13 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/06/28/函数执行环境及变量作用域/" title="函数执行环境及变量作用域">
+ <a href="/2015/06/18/with函数-一个不错的小工具/" title="with函数--一个不错的小工具">
   <strong>上一篇：</strong><br/>
   <span>
-  函数执行环境及变量作用域</span>
+  with函数--一个不错的小工具</span>
 </a>
 </div>
 
-
-<div class="next">
-<a href="/2015/06/11/js数据类型及内存/"  title="js数据类型及内存">
- <strong>下一篇：</strong><br/> 
- <span>js数据类型及内存
-</span>
-</a>
-</div>
 
 </nav>
 
