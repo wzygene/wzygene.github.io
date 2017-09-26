@@ -1,45 +1,28 @@
-extends base
-
-block title
-  title= page.title + ' | ' + config.title
-
-block content
-  .post
-    h1.post-title= page.title
-    .post-meta
-      if theme.comment
-        include _partial/comment_count
-        +comment-count(page.path)
-      p
-        span.date= page.date.format(theme.date_formats.post)
-        if page.categories.length > 0
-          span
-            for category in page.categories.toArray()
-              a.category(href=url_for(category.path))= category.name 
-        if theme.busuanzi == true
-          span
-            i#busuanzi_container_page_pv
-              i#busuanzi_value_page_pv
-              i= '' + __('hits')
-    .post-content
-      != page.content
-    include _partial/tag
-    .post-share
-      include _partial/share
-    include _partial/post_nav
-    #comments
-      include _partial/comments
-
-block tocmodel
-  if theme.toc.enable == true 
-    .widget(id='toc')
-      .widget-title
-        i(class='fa fa-fei')= __('contents')
-      != toc(page.content, {list_number: theme.toc.number})
-
-block pageOnly
-  if theme.toc.enable == true 
-    script(type='text/javascript', src=url_for(theme.js) + '/toctotop.js' + '?v=' + theme.version, async)
-  else 
-    script(type='text/javascript', src=url_for(theme.js) + '/totop.js' + '?v=' + theme.version, async)
-  include _partial/comments_js
+<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>到底什么是构造函数 | 原始计划</title><link rel="stylesheet" type="text/css" href="//fonts.css.network/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">到底什么是构造函数</h1><a id="logo" href="/.">原始计划</a><p class="description">黎明之前...</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Arama"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">到底什么是构造函数</h1><div class="post-meta"><a href="/2015/11/23/到底什么是构造函数/#comments" class="comment-count"></a><p><span class="date">Nov 23, 2015</span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><p>javascript是一门基于对象的语言，之所以是基于对象，而不是面向对象，是因为js这门语言没有类的概念，因此它的对象与基于类的语言中的对象有所不同。</p>
+<p>我们可以把js中的对象想象成一组无序的散列表。比如下面这就是一个最简单的对象<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">    name:<span class="string">'小明'</span>,</div><div class="line">    age:<span class="number">12</span>,</div><div class="line">    hobby:<span class="string">'王者农药'</span>,</div><div class="line">    play:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        alert(<span class="string">'来吧，我的亚瑟贼6！'</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这个简单的对象里面定义了一个实体，他有自己的某些特征：name、age、hobby，这就是我们常说的属性，同时还有自己的一个行为：play王者农药，这就是我们常说的方法。</p>
+<p>这是用字面量的方式创建的一个对象。我们还可以使用构造函数创建一个对象，但是构造函数是什么？如果仅仅将函数名首字母大写的函数理解为是构造函数。。。呵呵！</p>
+<p>要彻底理解构造函数，我们还是看看创建对象的演变过程吧，等这个故事讲完了，答案也就有了。</p>
+<p>我们往往要创建大量的对象，而这些对象很多有相同的属性群和方法群，这样的对象要是全都用字面量的方式去创建，很麻烦，而且没必要，因为我们可以使用一个函数来模拟出一个工厂，专门用来创建一类对象，这就是所谓的工厂函数。请看下面的例子<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPerson</span>(<span class="params">name,age,hobby</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> person = &#123;&#125;;</div><div class="line">    person.name = name;</div><div class="line">    person.age = age;</div><div class="line">    person.hobby = hobby;</div><div class="line">    <span class="keyword">return</span> person;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> xiaoming = createPerson(<span class="string">'xiaoming'</span>,<span class="number">12</span>,<span class="string">'王者农药'</span>);</div><div class="line"><span class="keyword">var</span> xiaohong = createPerson(<span class="string">'xiaohong'</span>,<span class="number">14</span>,<span class="string">'英雄联盟'</span>);</div></pre></td></tr></table></figure></p>
+<p>使用这个函数，我们就可以创建一个 person 类型的对象，这个函数没别的功能，它只能：创建一个对象，赋予这个对象一定的属性，然后将这个对象返回。上述代码中， xiaoming 和xiaohong 就是用这个工程函数创建出来的两个有相同属性群的对象。</p>
+<p>工程函数解决了创建多个相似对象的问题，但是它无法判定一个对象属于那种类型，这是个很麻烦的问题，但是随着js的发展，有一个新的模式出现了。那就是我们的主角：构造函数。先看一个构造函数的小例子<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,hobby</span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name,</div><div class="line">    <span class="keyword">this</span>.age = age,</div><div class="line">    <span class="keyword">this</span>.hobby = hobby</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> xiaoming = <span class="keyword">new</span> Person(<span class="string">'xiaoming'</span>,<span class="number">12</span>,<span class="string">'王者农药'</span>);</div><div class="line"><span class="keyword">var</span> xiaohong = <span class="keyword">new</span> Person(<span class="string">'xiaohong'</span>,<span class="number">14</span>,<span class="string">'英雄联盟'</span>);</div></pre></td></tr></table></figure></p>
+<p>上面这段代码就是典型的使用构造函数创建对象的过程。我们可以看到构造函数创建对象和工厂函数创建对象的几点不同之处：</p>
+<pre><code>1.函数体内部开始位置并没有创建对象；
+2.直接将属性赋予了this对象；
+3.函数结束的位置并没返回任何东西；
+4.在调用函数的时候，在函数前面加了一个 new 操作符。
+</code></pre><p>这几点不同之处就是理解构造函数的关键。</p>
+<p>其实，一个函数能不能称之为构造函数，与它怎么定义没有半毛钱的关系，关键在于这个函数怎么调用。如果直接调用，或者作为一个对象的方法被调用，他都只是一个普通的函数。但是如果使用 new 操作符去调用一个函数，那就不一样了，这个 new 操作符会悄悄地做一些事情，而被调用的函数就是因为 new 操作符做的这些事情，被抬到了一个新的高度，然后被赋予一个新的称呼：构造函数。</p>
+<p>那么，new 操作符到底做什么事情呢？其实就是4个步骤：</p>
+<pre><code>1.创建一个新对象；
+2.将构造函数的上下文设置成这个对象（因此this就指向了这个对象）；
+3.依次执行构造函数中的代码（也就是给这个对象添加属性）；
+4.返回这个新对象。
+</code></pre><p>所以，在 Person 函数中，我们没有看到创建对象，也没有看到函数返回任何东西，但是最终一个对象被创建了出来，就是因为这些工作都被 new 操作符隐式地完成了。</p>
+<p>这个时候，我们别忘了之前的那个问题：怎么判断一个对象的类型？使用构造函数创建一个对象之后，这个对象就会有一个constructor属性，通过这个属性我们就能判断这个对象是什么类型了。在之前代码的基础上执行下面这句代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(xiaoming.constructor == Person);</div></pre></td></tr></table></figure></p>
+<p>没什么好怀疑的，打印的结果就是 true。</p>
+<p>我们现在该思考一个问题了，构造函数中并没有给this对象赋值一个 constructor 的属性啊，它是从哪跑粗来的？</p>
+<p>答案是：原型。 </p>
+<p>原型是什么？呵呵，荆轲刺秦王！！！</p>
+</div><div class="tags"></div><div class="post-share"><div class="bdsharebuttonbox"><span style="float:left;line-height: 28px;height: 28px;font-size:16px;font-weight:blod">分享到：</span><a href="#" data-cmd="more" class="bds_more"></a><a href="#" data-cmd="mshare" title="分享到一键分享" class="bds_mshare"></a><a href="#" data-cmd="fbook" title="分享到Facebook" class="bds_fbook"></a><a href="#" data-cmd="twi" title="分享到Twitter" class="bds_twi"></a><a href="#" data-cmd="linkedin" title="分享到linkedin" class="bds_linkedin"></a><a href="#" data-cmd="youdao" title="分享到有道云笔记" class="bds_youdao"></a><a href="#" data-cmd="evernotecn" title="分享到印象笔记" class="bds_evernotecn"></a><a href="#" data-cmd="weixin" title="分享到微信" class="bds_weixin"></a><a href="#" data-cmd="qzone" title="分享到QQ空间" class="bds_qzone"></a><a href="#" data-cmd="tsina" title="分享到新浪微博" class="bds_tsina"></a></div></div><div class="post-nav"><a href="/2015/11/27/浅聊原型链原理/" class="pre">浅聊原型链原理</a><a href="/2015/11/19/浅拷贝和深拷贝/" class="next">浅拷贝和深拷贝</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/04/18/jquery底层实现以及插件扩展原理/">jquery底层实现以及插件扩展原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/02/17/jsonp跨域原理浅析/">jsonp跨域原理浅析</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/26/同源与跨域/">同源与跨域</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/27/浅聊原型链原理/">浅聊原型链原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/23/到底什么是构造函数/">到底什么是构造函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/19/浅拷贝和深拷贝/">浅拷贝和深拷贝</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/16/网站开发的两种模式：渐进增强与优雅降级/">网站开发的两种模式：渐进增强与优雅降级</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/28/函数执行环境及变量作用域/">函数执行环境及变量作用域</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/18/with函数-一个不错的小工具/">with函数--一个不错的小工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/06/11/js数据类型及内存/">js数据类型及内存</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><a href="/baidusitemap.xml">Baidu Site Haritası</a> |  <a href="/atom.xml">订阅</a> |  <a href="/about/">关于</a></p><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p><p><span> Copyright &copy;<a href="/." rel="nofollow">wzygene.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Count by<a href="http://busuanzi.ibruce.info/"> busuanzi.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","weixin","tsina","qzone","linkedin","fbook","twi","print","renren","sqq","evernotecn","bdysc","tqq","tqf","bdxc","kaixin001","tieba","douban","bdhome","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","youdao","sdo","qingbiji","people","xinhua","mail","isohu","yaolan","wealink","ty","iguba","h163","copy"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"]}};with(document)0[(getElementsByTagName('head')[0]||head).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script></body></html>
